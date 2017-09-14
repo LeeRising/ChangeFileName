@@ -23,21 +23,16 @@ namespace ChangeFileName
                 foreach (var file in filesInFolder)
                 {
                     var regex = new Regex(".png|.jpg", RegexOptions.IgnoreCase);
-                    using (var fileStream = new StreamReader(file))
-                    {
-                        if (!regex.IsMatch(Path.GetExtension(file))) continue;
-                        using (var writer = new StreamWriter("rename/"+Path.GetFileName(file).Replace('–', '_').Replace('-', '_')))
-                            writer.Write(fileStream);
-                    }
+                    if (!regex.IsMatch(Path.GetExtension(file))) continue;
+                    File.WriteAllBytes("rename/" + Path.GetFileName(file).Replace('–', '_').Replace('-', '_'),File.ReadAllBytes(file));
                     Console.WriteLine($"{Path.GetFileName(file)} successfully renamed");
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                Console.ReadKey();
             }
-
-            Console.ReadKey();
         }
     }
 }
